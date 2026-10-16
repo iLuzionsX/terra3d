@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<title>Terra 3D — OpenStreetMap planet explorer</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<canvas id="gl"></canvas>
+
+<!-- ============ HUD ============ -->
+<div id="hud" class="hidden">
+  <div id="hud-topleft" class="panel">
+    <div id="vehicleName">—</div>
+    <div id="speedRow"><span id="speedVal">0</span><span id="speedUnit">km/h</span></div>
+    <div id="speedbar"><div id="speedfill"></div></div>
+    <div id="altRow" class="hidden">ALT <span id="altVal">0</span>&nbsp;m</div>
+    <div id="hintRow"></div>
+  </div>
+  <div id="hud-topright" class="panel">
+    <div id="clockRow"><span id="clock">14:30</span><span id="daypart"></span><span id="fps"></span></div>
+    <div id="coordsRow"></div>
+    <div id="headingRow"><span id="compass">N</span><span id="headingVal">0°</span></div>
+  </div>
+  <div id="toast" class="hidden"></div>
+  <div id="statusPill" class="hidden"><span class="spinner"></span><span id="statusText"></span></div>
+  <div id="help" class="panel hidden"></div>
+  <div id="attrib">Map data © OpenStreetMap contributors&nbsp;·&nbsp;Elevation: Mapzen/Tilezen terrarium (AWS Open Data)&nbsp;·&nbsp;Engine: Terra3D (from scratch)</div>
+</div>
+
+<!-- ============ START MENU ============ -->
+<div id="menu">
+  <div id="menuInner">
+    <h1>TERRA<span>3D</span></h1>
+    <p class="tagline">The whole planet, streamed live from OpenStreetMap — car, boat &amp; plane.<br>
+    Hand-written WebGL2 engine. Real buildings, real terrain, no map SDKs.</p>
+
+    <div class="section">
+      <label>Choose a place</label>
+      <div id="locChips"></div>
+    </div>
+
+    <div class="section row">
+      <div class="col">
+        <label for="latInput">Latitude</label>
+        <input id="latInput" type="text" spellcheck="false">
+      </div>
+      <div class="col">
+        <label for="lonInput">Longitude</label>
+        <input id="lonInput" type="text" spellcheck="false">
+      </div>
+      <div class="col">
+        <label for="qualitySel">Quality</label>
+        <select id="qualitySel">
+          <option value="low">Low</option>
+          <option value="medium" selected>Medium</option>
+          <option value="high">High</option>
+        </select>
+      </div>
+      <div class="col">
+        <label for="timeInput">Time of day <span id="timeLabel">14:30</span></label>
+        <input id="timeInput" type="range" min="0" max="1439" value="870">
+      </div>
+    </div>
+
+    <div class="section center">
+      <button id="startBtn">START EXPLORING</button>
+      <div id="menuError" class="hidden"></div>
+    </div>
+
+    <p class="credits">Map data © OpenStreetMap contributors (ODbL) · Elevation: Mapzen/Tilezen "terrarium" · Overpass API</p>
+  </div>
+</div>
+
+<!-- ============ LOADING ============ -->
+<div id="loading" class="hidden">
+  <div id="loadBox">
+    <div id="loadTitle">Building the world…</div>
+    <div id="loadbar"><div id="loadfill"></div></div>
+    <div id="loadmsg">contacting Overpass API…</div>
+    <div id="loadHint">First load of a dense city can take a minute — it's pulled live from OpenStreetMap.<br>Results are cached, so revisiting is instant.</div>
+  </div>
+</div>
+
+<!-- ============ PAUSE MENU ============ -->
+<div id="pause" class="hidden">
+  <div id="pauseBox" class="panel">
+    <h2>Paused</h2>
+    <div class="section row">
+      <div class="col">
+        <label for="pauseTime">Time of day <span id="pauseTimeLabel">14:30</span></label>
+        <input id="pauseTime" type="range" min="0" max="1439" value="870">
+      </div>
+      <div class="col">
+        <label for="pauseTimeScale">Clock speed</label>
+        <select id="pauseTimeScale">
+          <option value="1" selected>Frozen</option>
+          <option value="60">1 min / s</option>
+          <option value="600">10 min / s</option>
+        </select>
+      </div>
+    </div>
+    <div class="section center">
+      <button id="resumeBtn">RESUME</button>
+      <button id="menuBtn" class="ghost">MAIN MENU</button>
+    </div>
+    <p class="credits">Map data © OpenStreetMap contributors</p>
+  </div>
+</div>
+
+<script type="module" src="src/main.js"></script>
+</body>
+</html>
